@@ -264,3 +264,12 @@ plugins: [
 ]
 ```
 # vue-cli-faster-template
+
+## Advanced
+```bash
+# --report to build with bundle size analytics
+npm run build --report
+
+# --preview to start a server in local to preview
+npm run build --preview
+

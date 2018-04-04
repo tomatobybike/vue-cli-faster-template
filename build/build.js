@@ -1,10 +1,13 @@
 require('./check-versions')()
 
+var config = require("../config")
 process.env.NODE_ENV = 'production'
 
+var opn = require("opn")
 var ora = require('ora')
 var rm = require('rimraf')
 var path = require('path')
+var express = require("express")
 var chalk = require('chalk')
 var webpack = require('webpack')
 var config = require('../config')
@@ -31,5 +34,19 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
       '  Tip: built files are meant to be served over an HTTP server.\n' +
       '  Opening index.html over file:// won\'t work.\n'
     ))
+    if(process.env.npm_config_preview){
+      var app = express()
+      var staticPath = path.posix.join(
+        config.build.assetsPublicPath,
+        config.build.assetsSubDirectory
+      )
+      console.log('staticPath:'+staticPath)
+      app.use('/', express.static(path.join(__dirname, '../dist')))
+      var port = 8081
+      var uri = "http://localhost:" + port +""
+      var server = app.listen(port)
+      console.log('> Listening at ' +  'http://localhost:'+ port + '\n')
+      opn(uri)
+    }
   })
 })
